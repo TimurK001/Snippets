@@ -1,5 +1,6 @@
 from django.http import Http404
 from django.shortcuts import render, redirect
+from MainApp.models import Snippet
 
 
 def get_base_context(request, pagename):
@@ -20,4 +21,19 @@ def add_snippet_page(request):
 
 def snippets_page(request):
     context = get_base_context(request, 'Просмотр сниппетов')
+    snippets = Snippet.objects.all()
+    context['snippets'] = snippets
     return render(request, 'pages/view_snippets.html', context)
+
+def snippet_create(request):
+    if request.method == "POST":
+        name = request.POST['name']
+        lang = request.POST['lang']
+        code = request.POST['code']
+        snippet = Snippet(name=name, lang=lang, code=code)
+        snippet.save()
+        return redirect('snippets_list')
+    raise Http404
+
+    # if request.method = "GET":
+    #     request.GET
