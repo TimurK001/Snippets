@@ -25,7 +25,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', views.index_page, name='home'),
     path('snippets/add', views.add_snippet_page, name='snippets_add'),
-    path('snippets/create', views.snippet_create),
+    # path('snippets/create', views.snippet_create),
     path('snippets/list', views.snippets_page, name='snippets_list'),
 ]
 
