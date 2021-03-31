@@ -34,4 +34,9 @@ def snippets_page(request):
     context['snippets'] = snippets
     return render(request, 'pages/view_snippets.html', context)
 
+def snippets_edit(request, id):
+    try:
+        snippet = Snippet.objects.get(id=id)
+    except Snippet.DoesNotExist():
+        raise Http404
 
