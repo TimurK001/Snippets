@@ -21,6 +21,7 @@
       <th scope="col">lang</th>
       <th scope="col">code</th>
       <th scope="col">datetime</th>
+      <th scope="col">author</th>
     </tr>
   </thead>
   <tbody>
@@ -31,6 +32,7 @@
       <td>{{snippet.lang}}</td>
       <td>{{snippet.code}}</td>
       <td>{{snippet.creation_date|date:"d.m.Y"}}</td>
+      <td>{{snippet.author.username|default:"Отсутствует"}}</td>
     </tr>
     {% endfor %}
   </tbody>

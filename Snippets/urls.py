@@ -27,5 +27,7 @@ urlpatterns = [
     path('snippets/add', views.add_snippet_page, name='snippets_add'),
     # path('snippets/create', views.snippet_create),
     path('snippets/list', views.snippets_page, name='snippets_list'),
+    path('auth/login', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
 ]
 
