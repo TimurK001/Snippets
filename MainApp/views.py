@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render, redirect
-from MainApp.models import Snippet
-from MainApp.forms import SnippetForm
+from MainApp.models import Snippet, Comment
+from MainApp.forms import SnippetForm, CommentForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -74,7 +74,7 @@ def my_snippets(request):
     return render(request, 'pages/view_snippets.html', context)
 
 def registration(request):
-    # print(request.method)
+    print(request.method)
     if request.method == 'POST':
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -82,13 +82,44 @@ def registration(request):
         # print("username =", username)
         # print("password =", password)
         user = auth.authenticate(request, username=username, password=password)
-        if user is None:
-            user = User.objects.create(username=username, email=email, password=password)
+        if user is not None:
+            auth.login(request, user)
+        else:
+            try:
+                user = User.objects.create(username=username, email=email, password=password)
+            except:
+                context = {}
+                context['error'] = "Введены некорректные регистрационные данные"
+                return render(request, 'pages/index.html', context)
+
             user.set_password(password)
             user.save()
             new_user = auth.authenticate(request, username=username, password=password)
             auth.login(request, new_user)
-        else:
-            return redirect('home')
+
+            # return redirect('home')
 
     return redirect('home')
+
+@login_required()
+def comment_add(request):
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.author = request.user
+            comment.snippet = request.Snippet.id
+            comment.save()
+
+            return redirect(f'/snippet_page/{request.Snippet.id}')
+
+
+def snippet_page(request, id):
+    snippet = Snippet.objects.get(id=id)
+    comments = Comment.objects.filter(snippet_id=id)
+    form_snippet = SnippetForm(instance=snippet)
+    form_comment = CommentForm()
+    context =get_base_context(request, "Стр сниппета")
+    context["form_snippet"] = form_snippet
+    context["snippet"] = snippet
+    return render(request, 'pages/snippet_page.html', context)

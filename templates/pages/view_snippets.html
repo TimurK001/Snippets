@@ -29,12 +29,19 @@
     {%for snippet in snippets%}
     <tr>
       <td>{{snippet.id}}</td>
-      <td>{{snippet.name}}</td>
+      <td><a href="{%url 'snippet_page' snippet.id%}">{{snippet.name}}</td</a>,
       <td>{{snippet.lang}}</td>
       <td>{{snippet.code}}</td>
       <td>{{snippet.creation_date|date:"d.m.Y"}}</td>
       <td>{{snippet.author.username|default:"Отсутствует"}}</td>
       <td>{{snippet.public}}</td>
+      <td>
+        <form action="{% url 'comment_add' %}" method="POST">
+            {% csrf_token %}
+            {{comment_form}}
+            <button type="submit" class="form-control form-control-lg btn btn-info">Добавить комментарий</button>
+        </form>
+       </td>
     </tr>
     {% endfor %}
   </tbody>

@@ -21,16 +21,19 @@ from django.urls import path
 from MainApp import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
 
 urlpatterns = [
     path('', views.index_page, name='home'),
     path('snippets/add', views.add_snippet_page, name='snippets_add'),
     # path('snippets/create', views.snippet_create),
     path('snippets/list', views.snippets_page, name='snippets_list'),
+    path('snippet/<int:id>', views.snippet_page, name='snippet_page'),
     path('auth/login', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
     path('mysnippets/', views.my_snippets, name='my_snippets'),
     path('auth/register/', views.registration, name='registration'),
-
+    path('comment/add', views.comment_add, name="comment_add"),
+    path('admin/', admin.site.urls),
 ]
 
