@@ -22,6 +22,7 @@
       <th scope="col">code</th>
       <th scope="col">datetime</th>
       <th scope="col">author</th>
+      <th scope="col">public</th>
     </tr>
   </thead>
   <tbody>
@@ -33,6 +34,7 @@
       <td>{{snippet.code}}</td>
       <td>{{snippet.creation_date|date:"d.m.Y"}}</td>
       <td>{{snippet.author.username|default:"Отсутствует"}}</td>
+      <td>{{snippet.public}}</td>
     </tr>
     {% endfor %}
   </tbody>

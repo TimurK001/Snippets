@@ -4,6 +4,7 @@ from MainApp.models import Snippet
 from MainApp.forms import SnippetForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 def get_base_context(request, pagename):
     return {
@@ -35,7 +36,7 @@ def add_snippet_page(request):
 
 def snippets_page(request):
     context = get_base_context(request, 'Просмотр сниппетов')
-    snippets = Snippet.objects.all()
+    snippets = Snippet.objects.filter(public=True)
     context['snippets'] = snippets
     return render(request, 'pages/view_snippets.html', context)
 
@@ -65,4 +66,29 @@ def logout(request):
     auth.logout(request)
     return redirect('home')
 
+@login_required()
+def my_snippets(request):
+    context = get_base_context(request, 'Мои сниппеты')
+    snippets = Snippet.objects.filter(author=request.user)
+    context['snippets'] = snippets
+    return render(request, 'pages/view_snippets.html', context)
 
+def registration(request):
+    # print(request.method)
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        email = request.POST.get("email")
+        # print("username =", username)
+        # print("password =", password)
+        user = auth.authenticate(request, username=username, password=password)
+        if user is None:
+            user = User.objects.create(username=username, email=email, password=password)
+            user.set_password(password)
+            user.save()
+            new_user = auth.authenticate(request, username=username, password=password)
+            auth.login(request, new_user)
+        else:
+            return redirect('home')
+
+    return redirect('home')

@@ -14,3 +14,7 @@ class Snippet(models.Model):
     code = models.TextField(max_length=5000)
     creation_date = models.DateTimeField(default=datetime.now())
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    public = models.BooleanField(default=True)
+
+    def __repr__(self):
+        return f"S: {self.name} {self.author}"

@@ -29,5 +29,8 @@ urlpatterns = [
     path('snippets/list', views.snippets_page, name='snippets_list'),
     path('auth/login', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
+    path('mysnippets/', views.my_snippets, name='my_snippets'),
+    path('auth/register/', views.registration, name='registration'),
+
 ]
 
