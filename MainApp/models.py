@@ -6,6 +6,7 @@ LANG_CHOICES = [
     ('py','python'),
     ('cpp','C++'),
     ('js', 'java script'),
+    ('all','all'),
 ]
 
 class Snippet(models.Model):

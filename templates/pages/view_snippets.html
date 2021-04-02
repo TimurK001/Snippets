@@ -7,9 +7,16 @@
         <hr>
     </div>
 </div>
-<div class="row">
+<div class="col">
     <div class="col-4 offset-2">
         Список сниппетов:
+        <form method="GET">
+            <select name="lang_choice" onchange="form.submit()">
+                {% for lang in langs %}
+                <option value="{{lang.0}}">{{lang.1}}</option>
+                {% endfor %}
+            </select>
+        </form>
     </div>
 </div>
 
@@ -30,9 +37,9 @@
     <tr>
       <td>{{snippet.id}}</td>
       {% load my_tags %}
-      <td><a href="{%url 'snippet_page' snippet.id%}">{{snippet.name|upper}}</td</a>,
+      <td><a href="{%url 'snippet_page' snippet.id%}">{{snippet.name|upper}}</a></td>
       <td>{{snippet.lang}}</td>
-      <td>{{snippet.code}}</td>
+      <td>{{snippet.code|replaceN:"<tag>"}}</td>
       <td>{{snippet.creation_date|date:"d.m.Y"}}</td>
       <td>{{snippet.author.username|default:"Отсутствует"}}</td>
       <td>{{snippet.public}}</td>

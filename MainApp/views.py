@@ -1,6 +1,6 @@
 from django.http import Http404
 from django.shortcuts import render, redirect
-from MainApp.models import Snippet, Comment
+from MainApp.models import Snippet, Comment, LANG_CHOICES
 from MainApp.forms import SnippetForm, CommentForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
@@ -35,9 +35,16 @@ def add_snippet_page(request):
 
 
 def snippets_page(request):
+    lang_choice= request.GET.get("lang_choice")
     context = get_base_context(request, 'Просмотр сниппетов')
     snippets = Snippet.objects.filter(public=True)
+    if lang_choice == 'all':
+        snippets = Snippet.objects.all()
+    else:
+        snippets = Snippet.objects.filter(lang=lang_choice)
     context['snippets'] = snippets
+    context['langs'] = LANG_CHOICES
+    context['lang_choice'] = lang_choice
     return render(request, 'pages/view_snippets.html', context)
 
 def snippets_edit(request, id):
@@ -101,7 +108,7 @@ def registration(request):
 
     return redirect('home')
 
-@login_required()
+# @login_required()
 def comment_add(request):
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
@@ -110,8 +117,9 @@ def comment_add(request):
             comment.author = request.user
             comment.snippet = request.Snippet.id
             comment.save()
-
             return redirect(f'/snippet_page/{request.Snippet.id}')
+
+    return redirect('home')
 
 
 def snippet_page(request, id):

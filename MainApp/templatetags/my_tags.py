@@ -6,8 +6,8 @@ register = template.Library()
 def upper(value: str):
     return value.upper() + ' @'
 
-def replaceN(value: str):
-    return value.replace("\n", "<br>")
+def replaceN(value: str, tag):
+    return value.replace("\n", tag)
 
 # username|default:"Отсутствует"
 # def default(value, param):
