@@ -29,7 +29,8 @@
     {%for snippet in snippets%}
     <tr>
       <td>{{snippet.id}}</td>
-      <td><a href="{%url 'snippet_page' snippet.id%}">{{snippet.name}}</td</a>,
+      {% load my_tags %}
+      <td><a href="{%url 'snippet_page' snippet.id%}">{{snippet.name|upper}}</td</a>,
       <td>{{snippet.lang}}</td>
       <td>{{snippet.code}}</td>
       <td>{{snippet.creation_date|date:"d.m.Y"}}</td>
